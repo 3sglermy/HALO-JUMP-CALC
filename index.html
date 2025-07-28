@@ -24,7 +24,7 @@
     }
     .layer-header, .layer-row {
       display: grid;
-      grid-template-columns: 1.2fr 1.2fr 1.2fr 1.2fr 0.5fr;
+      grid-template-columns: 1.2fr 1.2fr 1.2fr 0.5fr;
       gap: 10px;
       align-items: center;
     }
@@ -119,14 +119,16 @@
   <div class="section">
     <h3>Wind Layers</h3>
     <div class="layer-header">
-      <div>Top Alt (ft)</div>
-      <div>Bottom Alt (ft)</div>
+      <div>Altitude (ft)</div>
       <div>Wind Dir (°)</div>
       <div>Wind Speed (kt)</div>
       <div></div>
     </div>
     <div id="wind-layers"></div>
     <button type="button" onclick="addLayer()">+ Add Wind Layer</button>
+    <div style="font-size:12px;color:#666;margin-top:8px;">
+      <i>Input wind at various altitudes from highest to lowest. Must have at least two layers for drift calculation. Each layer defines wind at that altitude; drift is calculated through each altitude segment.</i>
+    </div>
   </div>
 
   <div class="section">
@@ -175,8 +177,7 @@
       const div = document.createElement("div");
       div.classList.add("layer-row");
       div.innerHTML = `
-        <input type="number" placeholder="Top Alt (ft)">
-        <input type="number" placeholder="Bottom Alt (ft)">
+        <input type="number" placeholder="Altitude (ft)">
         <input type="number" placeholder="Wind Dir (°)">
         <input type="number" placeholder="Wind Speed (kt)">
         <button type="button" class="remove-btn" onclick="this.parentElement.remove()">✕</button>
@@ -188,19 +189,39 @@
       return deg * Math.PI / 180;
     }
 
-    function calcVector(K) {
+    // Helper: Get sorted wind layers (descending altitude)
+    function getSortedWindLayers() {
       const rows = document.getElementById("wind-layers").children;
-      let sumDx = 0, sumDy = 0;
+      let layers = [];
       for (let row of rows) {
         const inputs = row.querySelectorAll("input");
-        const topAlt = parseFloat(inputs[0].value);
-        const botAlt = parseFloat(inputs[1].value);
-        const dir = parseFloat(inputs[2].value);
-        const spd = parseFloat(inputs[3].value);
+        const alt = parseFloat(inputs[0].value);
+        const dir = parseFloat(inputs[1].value);
+        const spd = parseFloat(inputs[2].value);
+        if (isNaN(alt) || isNaN(dir) || isNaN(spd)) continue;
+        layers.push({ alt, dir, spd });
+      }
+      // Descending by altitude
+      layers.sort((a, b) => b.alt - a.alt);
+      return layers;
+    }
 
-        if (isNaN(topAlt) || isNaN(botAlt) || isNaN(dir) || isNaN(spd)) continue;
+    // Calculation assumes each segment is from layers[i] (top) to layers[i+1] (bottom)
+    function calcVector(K) {
+      let layers = getSortedWindLayers();
+      if (layers.length < 2) return {
+        dx:0, dy:0, dxR:'0.00', dyR:'0.00', total:'0.00', bearing:'0.0'
+      };
 
-        const dAlt = (topAlt - botAlt) / 1000;
+      let sumDx = 0, sumDy = 0;
+      for (let i = 0; i < layers.length - 1; i++) {
+        const top = layers[i];
+        const bot = layers[i + 1];
+        const dAlt = (top.alt - bot.alt) / 1000;
+        if (dAlt <= 0) continue;
+        // Use wind at the top of the segment
+        const dir = top.dir;
+        const spd = top.spd;
         const angle = (dir + 180) % 360;
         const rad = degToRad(angle);
         const vx = spd * Math.sin(rad);
@@ -345,7 +366,8 @@
       document.getElementById("dis-result").innerText = `👥 DIS = ${dis.toFixed(2)} meters`;
     }
 
-    // Add one default layer for user convenience
+    // Add two default layers for user convenience
+    addLayer();
     addLayer();
   </script>
 </body>
