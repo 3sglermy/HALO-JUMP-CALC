@@ -1,285 +1,19 @@
 <!DOCTYPE html>
 <html>
-
-<html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HALO Drift Calculator – Multi-Layer Wind</title>
-
   <style>
     body {
-  background: #20262E;
-  padding: 20px;
-  font-family: Helvetica;
-}
-
-#app {
-  background: #fff;
-  border-radius: 4px;
-  padding: 20px;
-  transition: all 0.2s;
-}
-
-li {
-  margin: 8px 0;
-}
-
-h2 {
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.done {
-  color: rgba(0, 0, 0, 0.3);
-  text-decoration: line-through;
-}
-
-input {
-  margin-right: 5px;
-}body {
       font-family: Arial, sans-serif;
       background-color: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-      max-width: 500px;
-      margin: auto;
-    }
-
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-
-    .container {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      background-color: #007bff;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .output {
-      margin-top: 20px;
-      font-size: 18px;
-      text-align: center;
-      color: #222;
-    }body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      padding: 20px;
-      max-width: 500px;
-      margin: auto;
-    }
-
-    h2 {
-      text-align: center;
-      color: #222;
-    }
-
-    .calculator {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    label {
-      display: block;
-      margin: 12px 0 5px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: bold;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .result {
-      margin-top: 20px;
-      font-size: 18px;
-      text-align: center;
-    }body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    h2 {
-      text-align: center;
-      color: #222;
-    }
-
-    .calculator {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-top: 5px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: bold;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .result {
-      margin-top: 20px;
-      font-size: 18px;
-      text-align: center;
-    }
-
-    hr {
-      margin: 30px 0;
-      border: none;
-      border-top: 1px solid #ccc;
-    }body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      padding: 20px;
-      max-width: 650px;
-      margin: auto;
-    }
-
-    h2 {
-      text-align: center;
-      color: #222;
-    }
-
-    .calculator {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-top: 5px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: bold;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .result {
-      margin-top: 20px;
-      font-size: 16px;
-      text-align: center;
-      line-height: 1.6em;
-    }body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
       padding: 20px;
       max-width: 800px;
       margin: auto;
     }
     h2 {
       text-align: center;
+      color: #222;
     }
     .section {
       background: white;
@@ -288,18 +22,59 @@ input {
       margin-bottom: 30px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+    .layer-header, .layer-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1.2fr 1.2fr 1.2fr 0.5fr;
+      gap: 10px;
+      align-items: center;
+    }
+    .layer-header {
+      font-weight: bold;
+      margin-bottom: -5px;
+      padding-right: 12px;
+    }
+    .layer-header > div {
+      text-align: left;
+    }
+    .layer-row {
+      margin-top: 10px;
+      padding-right: 12px;
+    }
+    .layer-row input {
+      width: 100%;
+      min-width: 0;
+      padding: 8px 6px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .remove-btn {
+      background-color: #dc3545;
+      color: white;
+      padding: 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .remove-btn:hover {
+      background-color: #c82333;
+    }
     label {
       font-weight: bold;
       display: block;
       margin-top: 10px;
     }
-    input {
+    input, select {
       width: 100%;
       padding: 8px;
       font-size: 16px;
       margin-top: 4px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      box-sizing: border-box;
     }
     button {
       margin-top: 15px;
@@ -321,199 +96,46 @@ input {
       font-size: 16px;
       line-height: 1.6;
     }
-    .layer-row {
+    .plot-container {
+      margin-top: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      padding: 20px;
       display: flex;
-      gap: 10px;
-      margin-top: 10px;
+      justify-content: center;
     }
-    .layer-row input {
-      flex: 1;
-    }
-    .remove-btn {
-      background-color: #dc3545;
-      color: white;
-      padding: 8px;
-      font-size: 14px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .remove-btn:hover {
-      background-color: #c82333;
-    }body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    .section {
-      margin-bottom: 40px;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    .wind-layer {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    input[type="number"], select {
-      width: 100%;
-      padding: 6px;
-      box-sizing: border-box;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 8px 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .result {
-      margin-top: 10px;
-      font-style: italic;
-      color: #333;
-    }body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    .section {
-      margin-bottom: 40px;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    .wind-layer {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    input[type="number"], select {
-      width: 100%;
-      padding: 6px;
-      box-sizing: border-box;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 8px 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .result {
-      margin-top: 10px;
-      font-style: italic;
-      color: #333;
-    }body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    .section {
-      margin-bottom: 40px;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    .wind-layer {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    input[type="number"], select {
-      width: 100%;
-      padding: 6px;
-      box-sizing: border-box;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 8px 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .result {
-      margin-top: 10px;
-      font-style: italic;
-      color: #333;
-    }
-
-    canvas {
-      border: 1px solid #ccc;
-      margin-top: 15px;
-      background: #f9f9f9;
+    #drift-plot {
+      max-width: 400px;
+      max-height: 400px;
     }
   </style>
-
-  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h2>HALO Drift Calculator – Multi-Layer Wind</h2>
 
   <div class="section">
     <h3>Wind Layers</h3>
+    <div class="layer-header">
+      <div>Top Alt (ft)</div>
+      <div>Bottom Alt (ft)</div>
+      <div>Wind Dir (°)</div>
+      <div>Wind Speed (kt)</div>
+      <div></div>
+    </div>
     <div id="wind-layers"></div>
-    <button onclick="addLayer()">+ Add Wind Layer</button>
+    <button type="button" onclick="addLayer()">+ Add Wind Layer</button>
   </div>
 
   <div class="section">
     <h3>Freefall & Canopy Drift</h3>
-
-    <label for="jump-altitude">Jump Altitude (ft)</label>
-    <input type="number" id="jump-altitude" placeholder="e.g. 20000">
-
-    <label for="fall-time">Freefall Time (sec)</label>
-    <input type="number" id="fall-time" placeholder="e.g. 120">
-
-    <button onclick="calcDrift()">Calculate Drift Vectors & Displacement</button>
+    <button type="button" onclick="calcDrift()">Calculate Drift Vectors & Displacement</button>
     <div class="result" id="drift-result">Result will appear here...</div>
-
-    <canvas id="drift-canvas" width="500" height="500"></canvas>
+    <div class="plot-container">
+      <canvas id="drift-plot" width="400" height="400"></canvas>
+    </div>
   </div>
 
   <div class="section">
@@ -529,7 +151,7 @@ input {
     <label for="gs-ft">Ground Speed (knots)</label>
     <input type="number" id="gs-ft" placeholder="e.g. 130">
 
-    <button onclick="calcFT()">Calculate FT</button>
+    <button type="button" onclick="calcFT()">Calculate FT</button>
     <div class="result" id="ft-result"></div>
   </div>
 
@@ -541,613 +163,190 @@ input {
     <label for="time">Time Between Jumpers (sec)</label>
     <input type="number" id="time" placeholder="e.g. 5">
 
-    <button onclick="calcDIS()">Calculate DIS</button>
+    <button type="button" onclick="calcDIS()">Calculate DIS</button>
     <div class="result" id="dis-result"></div>
   </div>
 
   <script>
-    class TodoApp extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-    	items: [
-      	{ text: "Learn JavaScript", done: false },
-        { text: "Learn React", done: false },
-        { text: "Play around in JSFiddle", done: true },
-        { text: "Build something awesome", done: true }
-      ]
-    }
-  }
-  
-  render() {
-    return (
-      <div>
-        <h2>Todos:</h2>
-        <ol>
-        {this.state.items.map(item => (
-          <li key={item.id}>
-            <label>
-              <input type="checkbox" disabled readOnly checked={item.done} /> 
-              <span className={item.done ? "done" : ""}>{item.text}</span>
-            </label>
-          </li>
-        ))}
-        </ol>
-      </div>
-    )
-  }
-}
+    let driftChart;
 
-ReactDOM.render(<TodoApp />, document.querySelector("#app"))
-function calculateDrift() {
-      const g = 9.81;
-      const h = parseFloat(document.getElementById('height').value);
-      const v_w = parseFloat(document.getElementById('wind').value);
-      const output = document.getElementById('output');
-
-      if (isNaN(h) || isNaN(v_w) || h < 0 || v_w < 0) {
-        output.innerHTML = "❌ Please enter valid positive numbers.";
-        return;
-      }
-
-      const t = Math.sqrt((2 * h) / g);
-      const d = v_w * t;
-
-      output.innerHTML = `
-        ⏱️ <strong>Time to fall:</strong> ${t.toFixed(2)} seconds<br>
-        💨 <strong>Drift distance:</strong> ${d.toFixed(2)} meters
-      `;
-    }function calculateFFD() {
-    const K = 3; // constant from your FFD formula
-    const altitudeFeet = parseFloat(document.getElementById('altitude').value);
-    const windDrift = parseFloat(document.getElementById('wind').value);
-    const resultDiv = document.getElementById('result');
-
-    if (isNaN(altitudeFeet) || isNaN(windDrift) || altitudeFeet <= 0 || windDrift < 0) {
-      resultDiv.innerHTML = "❌ Enter valid altitude and wind drift.";
-      return;
-    }
-
-    const altitudeK = altitudeFeet / 1000;
-    const drift = K * altitudeK * windDrift;
-
-    resultDiv.innerHTML = `💨 <strong>Drift Distance:</strong> ${drift.toFixed(2)} meters`;
-  }function calcFFD() {
-    const alt = parseFloat(document.getElementById('ffd-alt').value);
-    const wind = parseFloat(document.getElementById('ffd-wind').value);
-    if (isNaN(alt) || isNaN(wind)) {
-      document.getElementById('ffd-result').innerHTML = "❌ Invalid input";
-      return;
-    }
-    const A = alt / 1000;
-    const D = 3 * A * wind;
-    document.getElementById('ffd-result').innerHTML = `💨 FFD = ${D.toFixed(2)} meters`;
-  }
-
-  function calcCD() {
-    const alt = parseFloat(document.getElementById('cd-alt').value);
-    const wind = parseFloat(document.getElementById('cd-wind').value);
-    if (isNaN(alt) || isNaN(wind)) {
-      document.getElementById('cd-result').innerHTML = "❌ Invalid input";
-      return;
-    }
-    const A = alt / 1000;
-    const D = 30 * A * wind;
-    document.getElementById('cd-result').innerHTML = `🪂 CD = ${D.toFixed(2)} meters`;
-  }
-
-  function calcFT() {
-    const dq = parseFloat(document.getElementById('dq').value);
-    const gs = parseFloat(document.getElementById('gs-ft').value);
-    if (isNaN(dq) || isNaN(gs)) {
-      document.getElementById('ft-result').innerHTML = "❌ Invalid input";
-      return;
-    }
-    const ft = dq * gs * 0.51;
-    document.getElementById('ft-result').innerHTML = `🛫 FT = ${ft.toFixed(2)} meters`;
-  }
-
-  function calcDIS() {
-    const gs = parseFloat(document.getElementById('gs-dis').value);
-    const t = parseFloat(document.getElementById('time').value);
-    if (isNaN(gs) || isNaN(t)) {
-      document.getElementById('dis-result').innerHTML = "❌ Invalid input";
-      return;
-    }
-    const dis = gs * t * 0.51;
-    document.getElementById('dis-result').innerHTML = `👥 DIS = ${dis.toFixed(2)} meters`;
-  }function degToRad(deg) {
-    return deg * Math.PI / 180;
-  }
-
-  function calcVectorDrift(K, altitude, windDir, windSpeed) {
-    const A = altitude / 1000;
-    const thetaDeg = (windDir + 180) % 360;
-    const thetaRad = degToRad(thetaDeg);
-    const Vx = windSpeed * Math.sin(thetaRad);
-    const Vy = windSpeed * Math.cos(thetaRad);
-    const Dx = K * A * Vx;
-    const Dy = K * A * Vy;
-    const Dtotal = Math.sqrt(Dx*Dx + Dy*Dy);
-    let angle = (Math.atan2(Dx, Dy) * 180 / Math.PI + 360) % 360;
-
-    return {
-      dx: Dx.toFixed(2),
-      dy: Dy.toFixed(2),
-      total: Dtotal.toFixed(2),
-      angle: angle.toFixed(1)
-    };
-  }
-
-  function calcFFD() {
-    const alt = parseFloat(document.getElementById('ffd-alt').value);
-    const dir = parseFloat(document.getElementById('ffd-wind-dir').value);
-    const speed = parseFloat(document.getElementById('ffd-wind-speed').value);
-    const K = 3;
-
-    if (isNaN(alt) || isNaN(dir) || isNaN(speed)) {
-      document.getElementById('ffd-result').innerText = "❌ Invalid input";
-      return;
-    }
-
-    const drift = calcVectorDrift(K, alt, dir, speed);
-    document.getElementById('ffd-result').innerHTML =
-      `💨 Drift X: ${drift.dx} m<br>
-       💨 Drift Y: ${drift.dy} m<br>
-       📏 Total Drift: ${drift.total} m<br>
-       🧭 Drift Bearing: ${drift.angle}°`;
-  }
-
-  function calcCD() {
-    const alt = parseFloat(document.getElementById('cd-alt').value);
-    const dir = parseFloat(document.getElementById('cd-wind-dir').value);
-    const speed = parseFloat(document.getElementById('cd-wind-speed').value);
-    const K = 30;
-
-    if (isNaN(alt) || isNaN(dir) || isNaN(speed)) {
-      document.getElementById('cd-result').innerText = "❌ Invalid input";
-      return;
-    }
-
-    const drift = calcVectorDrift(K, alt, dir, speed);
-    document.getElementById('cd-result').innerHTML =
-      `🪂 Drift X: ${drift.dx} m<br>
-       🪂 Drift Y: ${drift.dy} m<br>
-       📏 Total Drift: ${drift.total} m<br>
-       🧭 Drift Bearing: ${drift.angle}°`;
-  }
-
-  function calcFT() {
-    const dq = parseFloat(document.getElementById('dq').value);
-    const gs = parseFloat(document.getElementById('gs-ft').value);
-    if (isNaN(dq) || isNaN(gs)) {
-      document.getElementById('ft-result').innerText = "❌ Invalid input";
-      return;
-    }
-    const ft = dq * gs * 0.51;
-    document.getElementById('ft-result').innerText = `🛫 FT = ${ft.toFixed(2)} meters`;
-  }
-
-  function calcDIS() {
-    const gs = parseFloat(document.getElementById('gs-dis').value);
-    const t = parseFloat(document.getElementById('time').value);
-    if (isNaN(gs) || isNaN(t)) {
-      document.getElementById('dis-result').innerText = "❌ Invalid input";
-      return;
-    }
-    const dis = gs * t * 0.51;
-    document.getElementById('dis-result').innerText = `👥 DIS = ${dis.toFixed(2)} meters`;
-  }function degToRad(deg) {
-    return deg * Math.PI / 180;
-  }
-
-  function addLayer() {
-    const container = document.getElementById("wind-layers");
-    const div = document.createElement("div");
-    div.classList.add("layer-row");
-    div.innerHTML = `
-      <input type="number" placeholder="Top Alt (ft)">
-      <input type="number" placeholder="Bottom Alt (ft)">
-      <input type="number" placeholder="Wind Dir (°)">
-      <input type="number" placeholder="Wind Speed (kt)">
-      <button class="remove-btn" onclick="this.parentElement.remove()">✕</button>
-    `;
-    container.appendChild(div);
-  }
-
-  function calcVector(K) {
-    const rows = document.getElementById("wind-layers").children;
-    let sumDx = 0, sumDy = 0;
-
-    for (let row of rows) {
-      const inputs = row.querySelectorAll("input");
-      const topAlt = parseFloat(inputs[0].value);
-      const botAlt = parseFloat(inputs[1].value);
-      const dir = parseFloat(inputs[2].value);
-      const spd = parseFloat(inputs[3].value);
-
-      if (isNaN(topAlt) || isNaN(botAlt) || isNaN(dir) || isNaN(spd)) continue;
-
-      const dAlt = (topAlt - botAlt) / 1000;
-      const angle = (dir + 180) % 360;
-      const rad = degToRad(angle);
-      const vx = spd * Math.sin(rad);
-      const vy = spd * Math.cos(rad);
-
-      sumDx += K * dAlt * vx;
-      sumDy += K * dAlt * vy;
-    }
-
-    const total = Math.sqrt(sumDx**2 + sumDy**2);
-    const bearing = (Math.atan2(sumDx, sumDy) * 180 / Math.PI + 360) % 360;
-
-    return {
-      dx: sumDx.toFixed(2),
-      dy: sumDy.toFixed(2),
-      total: total.toFixed(2),
-      bearing: bearing.toFixed(1)
-    };
-  }
-
-  function calcDrift() {
-    const ffd = calcVector(3);
-    const cd = calcVector(30);
-
-    document.getElementById("drift-result").innerHTML = `
-      <b>Freefall Drift (K=3):</b><br>
-      💨 X: ${ffd.dx} m | Y: ${ffd.dy} m<br>
-      📏 Distance: ${ffd.total} m<br>
-      🧭 Bearing: ${ffd.bearing}°<br><br>
-
-      <b>Canopy Drift (K=30):</b><br>
-      🪂 X: ${cd.dx} m | Y: ${cd.dy} m<br>
-      📏 Distance: ${cd.total} m<br>
-      🧭 Bearing: ${cd.bearing}°
-    `;
-  }
-
-  function calcFT() {
-    const dq = parseFloat(document.getElementById("dq").value);
-    const gs = parseFloat(document.getElementById("gs-ft").value);
-    if (isNaN(dq) || isNaN(gs)) {
-      document.getElementById("ft-result").innerText = "❌ Invalid input";
-      return;
-    }
-    const ft = dq * gs * 0.51;
-    document.getElementById("ft-result").innerText = `🛫 FT = ${ft.toFixed(2)} meters`;
-  }
-
-  function calcDIS() {
-    const gs = parseFloat(document.getElementById("gs-dis").value);
-    const t = parseFloat(document.getElementById("time").value);
-    if (isNaN(gs) || isNaN(t)) {
-      document.getElementById("dis-result").innerText = "❌ Invalid input";
-      return;
-    }
-    const dis = gs * t * 0.51;
-    document.getElementById("dis-result").innerText = `👥 DIS = ${dis.toFixed(2)} meters`;
-  }
-
-  // Add default layer
-  addLayer();function addLayer() {
-      const container = document.getElementById('wind-layers');
-      const div = document.createElement('div');
-      div.className = 'wind-layer';
+    function addLayer() {
+      const container = document.getElementById("wind-layers");
+      const div = document.createElement("div");
+      div.classList.add("layer-row");
       div.innerHTML = `
-        <div>
-          <label>Direction (°)</label>
-          <input type="number" class="wind-dir" placeholder="e.g. 270">
-        </div>
-        <div>
-          <label>Speed (knots)</label>
-          <input type="number" class="wind-speed" placeholder="e.g. 20">
-        </div>
-        <div>
-          <label>Altitude (ft)</label>
-          <input type="number" class="wind-altitude" placeholder="e.g. 15000">
-        </div>
+        <input type="number" placeholder="Top Alt (ft)">
+        <input type="number" placeholder="Bottom Alt (ft)">
+        <input type="number" placeholder="Wind Dir (°)">
+        <input type="number" placeholder="Wind Speed (kt)">
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">✕</button>
       `;
       container.appendChild(div);
     }
 
+    function degToRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    function calcVector(K) {
+      const rows = document.getElementById("wind-layers").children;
+      let sumDx = 0, sumDy = 0;
+      for (let row of rows) {
+        const inputs = row.querySelectorAll("input");
+        const topAlt = parseFloat(inputs[0].value);
+        const botAlt = parseFloat(inputs[1].value);
+        const dir = parseFloat(inputs[2].value);
+        const spd = parseFloat(inputs[3].value);
+
+        if (isNaN(topAlt) || isNaN(botAlt) || isNaN(dir) || isNaN(spd)) continue;
+
+        const dAlt = (topAlt - botAlt) / 1000;
+        const angle = (dir + 180) % 360;
+        const rad = degToRad(angle);
+        const vx = spd * Math.sin(rad);
+        const vy = spd * Math.cos(rad);
+
+        sumDx += K * dAlt * vx;
+        sumDy += K * dAlt * vy;
+      }
+      const total = Math.sqrt(sumDx**2 + sumDy**2);
+      const bearing = (Math.atan2(sumDx, sumDy) * 180 / Math.PI + 360) % 360;
+
+      return {
+        dx: sumDx,
+        dy: sumDy,
+        dxR: sumDx.toFixed(2),
+        dyR: sumDy.toFixed(2),
+        total: total.toFixed(2),
+        bearing: bearing.toFixed(1)
+      };
+    }
+
     function calcDrift() {
-      // Placeholder logic
-      document.getElementById('drift-result').innerText = 'Drift calculation not yet implemented.';
-    }
+      const ffd = calcVector(3);
+      const cd = calcVector(30);
 
-    function calcFT() {
-      const dq = parseFloat(document.getElementById('dq').value);
-      const gs = parseFloat(document.getElementById('gs-ft').value);
-
-      if (isNaN(gs)) {
-        document.getElementById('ft-result').innerText = 'Please enter a valid ground speed.';
-        return;
-      }
-
-      const ft = dq * gs;
-      document.getElementById('ft-result').innerText = `Forward Throw: ${ft.toFixed(2)} ft`;
-    }
-
-    function calcDIS() {
-      const gs = parseFloat(document.getElementById('gs-dis').value);
-      const time = parseFloat(document.getElementById('time').value);
-
-      if (isNaN(gs) || isNaN(time)) {
-        document.getElementById('dis-result').innerText = 'Please enter valid numbers.';
-        return;
-      }
-
-      const dis = gs * 1.68781 * time;
-      document.getElementById('dis-result').innerText = `Dispersion: ${dis.toFixed(2)} ft`;
-    }function addLayer() {
-      const container = document.getElementById('wind-layers');
-      const div = document.createElement('div');
-      div.className = 'wind-layer';
-      div.innerHTML = `
-        <div>
-          <label>Direction (°)</label>
-          <input type="number" class="wind-dir" placeholder="e.g. 270">
-        </div>
-        <div>
-          <label>Speed (knots)</label>
-          <input type="number" class="wind-speed" placeholder="e.g. 20">
-        </div>
-        <div>
-          <label>Altitude (ft)</label>
-          <input type="number" class="wind-altitude" placeholder="e.g. 15000">
-        </div>
+      document.getElementById("drift-result").innerHTML = `
+        <b>Freefall Drift (K=3):</b><br>
+        💨 X: ${ffd.dxR} m | Y: ${ffd.dyR} m<br>
+        📏 Distance: ${ffd.total} m<br>
+        🧭 Bearing: ${ffd.bearing}°<br><br>
+        <b>Canopy Drift (K=30):</b><br>
+        🪂 X: ${cd.dxR} m | Y: ${cd.dyR} m<br>
+        📏 Distance: ${cd.total} m<br>
+        🧭 Bearing: ${cd.bearing}°
       `;
-      container.appendChild(div);
+
+      plotDrift(ffd, cd);
     }
 
-    function calcDrift() {
-      const dirs = Array.from(document.getElementsByClassName('wind-dir')).map(input => parseFloat(input.value));
-      const speeds = Array.from(document.getElementsByClassName('wind-speed')).map(input => parseFloat(input.value));
-      const alts = Array.from(document.getElementsByClassName('wind-altitude')).map(input => parseFloat(input.value));
+    function plotDrift(ffd, cd) {
+      const ctx = document.getElementById('drift-plot').getContext('2d');
 
-      const resultDiv = document.getElementById('drift-result');
-      resultDiv.innerText = ''; // Clear previous result
+      // Find the maximum extent for chart scaling
+      const max = Math.max(
+        Math.abs(ffd.dx), Math.abs(ffd.dy),
+        Math.abs(cd.dx), Math.abs(cd.dy), 10
+      );
 
-      if (dirs.length < 2) {
-        resultDiv.innerText = 'Please enter at least two wind layers (for altitude spacing).';
-        return;
-      }
+      // Datasets for Freefall and Canopy
+      const data = {
+        labels: ['Origin', 'Freefall', 'Canopy'],
+        datasets: [
+          // Freefall vector (blue)
+          {
+            label: 'Freefall Drift',
+            data: [
+              {x: 0, y: 0},
+              {x: ffd.dx, y: ffd.dy}
+            ],
+            borderColor: 'blue',
+            backgroundColor: 'blue',
+            pointRadius: [5, 5],
+            fill: false,
+            showLine: true,
+            tension: 0,
+          },
+          // Canopy vector (green)
+          {
+            label: 'Canopy Drift',
+            data: [
+              {x: 0, y: 0},
+              {x: cd.dx, y: cd.dy}
+            ],
+            borderColor: 'green',
+            backgroundColor: 'green',
+            pointRadius: [5, 5],
+            fill: false,
+            showLine: true,
+            tension: 0,
+          }
+        ]
+      };
 
-      // Validate inputs
-      for (let i = 0; i < dirs.length; i++) {
-        if (isNaN(dirs[i]) || isNaN(speeds[i]) || isNaN(alts[i])) {
-          resultDiv.innerText = `Invalid input in layer ${i + 1}.`;
-          return;
+      const options = {
+        responsive: false,
+        scales: {
+          x: {
+            min: -max,
+            max: max,
+            title: {
+              display: true,
+              text: 'X (meters)'
+            },
+            grid: { color: '#eee' }
+          },
+          y: {
+            min: -max,
+            max: max,
+            title: {
+              display: true,
+              text: 'Y (meters)'
+            },
+            grid: { color: '#eee' }
+          }
+        },
+        plugins: {
+          legend: { display: true, position: 'top' },
+          tooltip: { enabled: true }
         }
+      };
+
+      // Destroy old chart if exists
+      if (driftChart) {
+        driftChart.destroy();
       }
-
-      // Sort layers by altitude descending
-      const layers = dirs.map((_, i) => ({
-        dirDeg: dirs[i],
-        speedKnots: speeds[i],
-        altFt: alts[i]
-      })).sort((a, b) => b.altFt - a.altFt);
-
-      let totalX = 0;
-      let totalY = 0;
-      let totalWeight = 0;
-
-      for (let i = 0; i < layers.length - 1; i++) {
-        const top = layers[i];
-        const bottom = layers[i + 1];
-
-        const altDiff = top.altFt - bottom.altFt;
-        const weight = altDiff;
-
-        const windToDeg = (top.dirDeg + 180) % 360;
-        const rad = windToDeg * Math.PI / 180;
-
-        const speedFtPerSec = top.speedKnots * 1.68781;
-
-        const x = Math.cos(rad) * speedFtPerSec * weight;
-        const y = Math.sin(rad) * speedFtPerSec * weight;
-
-        totalX += x;
-        totalY += y;
-        totalWeight += weight;
-      }
-
-      const avgX = totalX / totalWeight;
-      const avgY = totalY / totalWeight;
-
-      const magnitude = Math.sqrt(avgX ** 2 + avgY ** 2);
-      const directionRad = Math.atan2(avgY, avgX);
-      const directionDeg = (directionRad * 180 / Math.PI + 360) % 360;
-
-      const resultText = `
-        <b>Drift Vector (Altitude-Weighted):</b><br>
-        X Drift: ${avgX.toFixed(2)} ft/sec<br>
-        Y Drift: ${avgY.toFixed(2)} ft/sec<br>
-        Total Drift Speed: ${magnitude.toFixed(2)} ft/sec<br>
-        Direction of Drift (TO): ${directionDeg.toFixed(1)}°<br>
-        <i>(Use with jump altitude and time to get total displacement)</i>
-      `;
-
-      resultDiv.innerHTML = resultText;
+      driftChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options
+      });
     }
 
     function calcFT() {
-      const dq = parseFloat(document.getElementById('dq').value);
-      const gs = parseFloat(document.getElementById('gs-ft').value);
-
-      if (isNaN(gs)) {
-        document.getElementById('ft-result').innerText = 'Please enter a valid ground speed.';
+      const dq = parseFloat(document.getElementById("dq").value);
+      const gs = parseFloat(document.getElementById("gs-ft").value);
+      if (isNaN(dq) || isNaN(gs)) {
+        document.getElementById("ft-result").innerText = "❌ Invalid input";
         return;
       }
-
-      const ft = dq * gs;
-      document.getElementById('ft-result').innerText = `Forward Throw: ${ft.toFixed(2)} ft`;
+      const ft = dq * gs * 0.51;
+      document.getElementById("ft-result").innerText = `🛫 FT = ${ft.toFixed(2)} meters`;
     }
 
     function calcDIS() {
-      const gs = parseFloat(document.getElementById('gs-dis').value);
-      const time = parseFloat(document.getElementById('time').value);
-
-      if (isNaN(gs) || isNaN(time)) {
-        document.getElementById('dis-result').innerText = 'Please enter valid numbers.';
+      const gs = parseFloat(document.getElementById("gs-dis").value);
+      const t = parseFloat(document.getElementById("time").value);
+      if (isNaN(gs) || isNaN(t)) {
+        document.getElementById("dis-result").innerText = "❌ Invalid input";
         return;
       }
-
-      const dis = gs * 1.68781 * time;
-      document.getElementById('dis-result').innerText = `Dispersion: ${dis.toFixed(2)} ft`;
-    }function addLayer() {
-      const container = document.getElementById('wind-layers');
-      const div = document.createElement('div');
-      div.className = 'wind-layer';
-      div.innerHTML = `
-        <div>
-          <label>Direction (°)</label>
-          <input type="number" class="wind-dir" placeholder="e.g. 270">
-        </div>
-        <div>
-          <label>Speed (knots)</label>
-          <input type="number" class="wind-speed" placeholder="e.g. 20">
-        </div>
-        <div>
-          <label>Altitude (ft)</label>
-          <input type="number" class="wind-altitude" placeholder="e.g. 15000">
-        </div>
-      `;
-      container.appendChild(div);
+      const dis = gs * t * 0.51;
+      document.getElementById("dis-result").innerText = `👥 DIS = ${dis.toFixed(2)} meters`;
     }
 
-    function calcDrift() {
-      const dirs = Array.from(document.getElementsByClassName('wind-dir')).map(input => parseFloat(input.value));
-      const speeds = Array.from(document.getElementsByClassName('wind-speed')).map(input => parseFloat(input.value));
-      const alts = Array.from(document.getElementsByClassName('wind-altitude')).map(input => parseFloat(input.value));
-
-      const jumpAlt = parseFloat(document.getElementById('jump-altitude').value);
-      const fallTime = parseFloat(document.getElementById('fall-time').value);
-      const resultDiv = document.getElementById('drift-result');
-      const canvas = document.getElementById('drift-canvas');
-      const ctx = canvas.getContext('2d');
-      resultDiv.innerText = '';
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (dirs.length < 2) {
-        resultDiv.innerText = 'Please enter at least two wind layers (for altitude spacing).';
-        return;
-      }
-
-      for (let i = 0; i < dirs.length; i++) {
-        if (isNaN(dirs[i]) || isNaN(speeds[i]) || isNaN(alts[i])) {
-          resultDiv.innerText = `Invalid input in layer ${i + 1}.`;
-          return;
-        }
-      }
-
-      if (isNaN(jumpAlt) || isNaN(fallTime)) {
-        resultDiv.innerText = 'Please enter jump altitude and freefall time.';
-        return;
-      }
-
-      // Sort layers by altitude descending
-      const layers = dirs.map((_, i) => ({
-        dirDeg: dirs[i],
-        speedKnots: speeds[i],
-        altFt: alts[i]
-      })).sort((a, b) => b.altFt - a.altFt);
-
-      let totalX = 0;
-      let totalY = 0;
-      let totalWeight = 0;
-
-      for (let i = 0; i < layers.length - 1; i++) {
-        const top = layers[i];
-        const bottom = layers[i + 1];
-
-        const altDiff = top.altFt - bottom.altFt;
-        const weight = altDiff;
-
-        const windToDeg = (top.dirDeg + 180) % 360;
-        const rad = windToDeg * Math.PI / 180;
-        const speedFtPerSec = top.speedKnots * 1.68781;
-
-        const x = Math.cos(rad) * speedFtPerSec * weight;
-        const y = Math.sin(rad) * speedFtPerSec * weight;
-
-        totalX += x;
-        totalY += y;
-        totalWeight += weight;
-      }
-
-      const avgX = totalX / totalWeight;
-      const avgY = totalY / totalWeight;
-
-      const driftSpeed = Math.sqrt(avgX ** 2 + avgY ** 2);
-      const driftAngle = (Math.atan2(avgY, avgX) * 180 / Math.PI + 360) % 360;
-
-      const dispX = avgX * fallTime;
-      const dispY = avgY * fallTime;
-      const totalDisplacement = Math.sqrt(dispX ** 2 + dispY ** 2);
-
-      const resultText = `
-        <b>Drift Vector (Altitude-Weighted):</b><br>
-        X Drift: ${avgX.toFixed(2)} ft/sec<br>
-        Y Drift: ${avgY.toFixed(2)} ft/sec<br>
-        Total Drift Speed: ${driftSpeed.toFixed(2)} ft/sec<br>
-        Direction of Drift (TO): ${driftAngle.toFixed(1)}°<br><br>
-
-        <b>Total Displacement (Freefall):</b><br>
-        Time: ${fallTime.toFixed(1)} sec<br>
-        Displacement X: ${dispX.toFixed(1)} ft<br>
-        Displacement Y: ${dispY.toFixed(1)} ft<br>
-        Total Displacement: ${totalDisplacement.toFixed(1)} ft<br>
-        <i>Map scale: 1 pixel = 10 ft</i>
-      `;
-      resultDiv.innerHTML = resultText;
-
-      // Draw displacement vector
-      const scale = 10; // 10 feet per pixel
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const endX = centerX + dispX / scale;
-      const endY = centerY - dispY / scale;
-
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(endX, endY);
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Draw origin point
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
-      ctx.fillStyle = "blue";
-      ctx.fill();
-    }
-
-    function calcFT() {
-      const dq = parseFloat(document.getElementById('dq').value);
-      const gs = parseFloat(document.getElementById('gs-ft').value);
-
-      if (isNaN(gs)) {
-        document.getElementById('ft-result').innerText = 'Please enter a valid ground speed.';
-        return;
-      }
-
-      const ft = dq * gs;
-      document.getElementById('ft-result').innerText = `Forward Throw: ${ft.toFixed(2)} ft`;
-    }
-
-    function calcDIS() {
-      const gs = parseFloat(document.getElementById('gs-dis').value);
-      const time = parseFloat(document.getElementById('time').value);
-
-      if (isNaN(gs) || isNaN(time)) {
-        document.getElementById('dis-result').innerText = 'Please enter valid numbers.';
-        return;
-      }
-
-      const dis = gs * 1.68781 * time;
-      document.getElementById('dis-result').innerText = `Dispersion: ${dis.toFixed(2)} ft`;
-    }
+    // Add one default layer for user convenience
+    addLayer();
   </script>
 </body>
 </html>
