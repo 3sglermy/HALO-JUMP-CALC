@@ -370,5 +370,59 @@
     addLayer();
     addLayer();
   </script>
+   <div class="section">
+    <h3>Release Point (CARP) Calculator</h3>
+    <label for="dip-x">Desired Impact Point X (meters)</label>
+    <input type="number" id="dip-x" placeholder="e.g. 0 (default)">
+    <label for="dip-y">Desired Impact Point Y (meters)</label>
+    <input type="number" id="dip-y" placeholder="e.g. 0 (default)">
+    <label for="ft-value">Forward Throw (meters)</label>
+    <input type="number" id="ft-value" placeholder="e.g. 170">
+    <label for="ft-heading">Aircraft Heading (degrees)</label>
+    <input type="number" id="ft-heading" placeholder="e.g. 90">
+    <button type="button" onclick="calcCARP()">Calculate Release Point</button>
+    <div class="result" id="carp-result"></div>
+  </div>
+
+  <script>
+    function calcCARP() {
+      // DIP coordinates
+      let dipx = parseFloat(document.getElementById('dip-x').value);
+      let dipy = parseFloat(document.getElementById('dip-y').value);
+      if (isNaN(dipx)) dipx = 0;
+      if (isNaN(dipy)) dipy = 0;
+
+      // Get FFD and CD vectors (recalculate to be current)
+      const ffd = calcVector(3);
+      const cd = calcVector(30);
+
+      // Forward Throw
+      const ft = parseFloat(document.getElementById('ft-value').value);
+      const heading = parseFloat(document.getElementById('ft-heading').value);
+      if (isNaN(ft) || isNaN(heading)) {
+        document.getElementById("carp-result").innerText = "❌ Enter both FT and Heading.";
+        return;
+      }
+      // FT vector (X, Y) in heading direction
+      const rad = degToRad(heading);
+      const ft_x = ft * Math.sin(rad);
+      const ft_y = ft * Math.cos(rad);
+
+      // CARP = DIP - FFD - CD - FT
+      const relX = dipx - ffd.dx - cd.dx - ft_x;
+      const relY = dipy - ffd.dy - cd.dy - ft_y;
+      const dist = Math.sqrt(relX ** 2 + relY ** 2);
+      const bearing = (Math.atan2(relX, relY) * 180 / Math.PI + 360) % 360;
+
+      document.getElementById("carp-result").innerHTML = `
+        <b>Release Point Coordinates (relative to DIP):</b><br>
+        <b>X:</b> ${relX.toFixed(2)} m &nbsp; <b>Y:</b> ${relY.toFixed(2)} m<br>
+        <b>Distance from DIP:</b> ${dist.toFixed(2)} m<br>
+        <b>Bearing from DIP:</b> ${bearing.toFixed(1)}°
+        <br><br>
+        <i>(Negative X/Y means upwind/left of DIP, depending on wind & heading input.)</i>
+      `;
+    }
+  </script>
 </body>
 </html>
