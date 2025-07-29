@@ -105,38 +105,63 @@
       display: flex;
       justify-content: center;
     }
-    #drift-plot {
-      max-width: 400px;
-      max-height: 400px;
+    #drift-plot-3d {
+      width: 400px;
+      height: 400px;
     }
   </style>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Plotly.js CDN for 3D plotting -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
   <h2>HALO Drift Calculator – Multi-Layer Wind</h2>
 
+  <!-- Freefall Wind Layers -->
   <div class="section">
-    <h3>Wind Layers</h3>
+    <h3>Freefall Wind Layers</h3>
     <div class="layer-header">
       <div>Altitude (ft)</div>
       <div>Wind Dir (°)</div>
       <div>Wind Speed (kt)</div>
       <div></div>
     </div>
-    <div id="wind-layers"></div>
-    <button type="button" onclick="addLayer()">+ Add Wind Layer</button>
+    <div id="ff-wind-layers"></div>
+    <button type="button" onclick="addLayer('ff')">+ Add Freefall Layer</button>
     <div style="font-size:12px;color:#666;margin-top:8px;">
-      <i>Input wind at various altitudes from highest to lowest. Must have at least two layers for drift calculation. Each layer defines wind at that altitude; drift is calculated through each altitude segment.</i>
+      <i>Input wind at various altitudes for the freefall phase (from exit to deployment). Enter highest to lowest. Minimum two layers.</i>
+    </div>
+  </div>
+
+  <!-- Canopy Wind Layers -->
+  <div class="section">
+    <h3>Canopy Wind Layers</h3>
+    <div class="layer-header">
+      <div>Altitude (ft)</div>
+      <div>Wind Dir (°)</div>
+      <div>Wind Speed (kt)</div>
+      <div></div>
+    </div>
+    <div id="canopy-wind-layers"></div>
+    <button type="button" onclick="addLayer('canopy')">+ Add Canopy Layer</button>
+    <div style="font-size:12px;color:#666;margin-top:8px;">
+      <i>Input wind at various altitudes for the canopy phase (from deployment to ground). Enter highest to lowest. Minimum two layers.</i>
     </div>
   </div>
 
   <div class="section">
     <h3>Freefall & Canopy Drift</h3>
+    <label for="ff-speed">Freefall Speed (m/s, optional for 3D)</label>
+    <input type="number" id="ff-speed" placeholder="e.g. 54 (about 120 mph)">
+    <label for="cd-speed">Canopy Speed (m/s, optional for 3D)</label>
+    <input type="number" id="cd-speed" placeholder="e.g. 7">
     <button type="button" onclick="calcDrift()">Calculate Drift Vectors & Displacement</button>
     <div class="result" id="drift-result">Result will appear here...</div>
     <div class="plot-container">
-      <canvas id="drift-plot" width="400" height="400"></canvas>
+      <div id="drift-plot-3d"></div>
+    </div>
+    <div style="font-size:12px;color:#666;margin-top:8px;">
+      The 3D plot shows the jumper's path in X, Y, and altitude (Z), assuming constant average speeds.<br>
+      <b>Speeds are only used for 3D path generation; leave blank for default values.</b>
     </div>
   </div>
 
@@ -170,10 +195,9 @@
   </div>
 
   <script>
-    let driftChart;
-
-    function addLayer() {
-      const container = document.getElementById("wind-layers");
+    // Add Layer for either phase
+    function addLayer(phase) {
+      const container = document.getElementById(phase === 'ff' ? "ff-wind-layers" : "canopy-wind-layers");
       const div = document.createElement("div");
       div.classList.add("layer-row");
       div.innerHTML = `
@@ -189,9 +213,9 @@
       return deg * Math.PI / 180;
     }
 
-    // Helper: Get sorted wind layers (descending altitude)
-    function getSortedWindLayers() {
-      const rows = document.getElementById("wind-layers").children;
+    // Helper: Get sorted wind layers for a phase
+    function getSortedWindLayers(phase) {
+      const rows = document.getElementById(phase === 'ff' ? "ff-wind-layers" : "canopy-wind-layers").children;
       let layers = [];
       for (let row of rows) {
         const inputs = row.querySelectorAll("input");
@@ -206,20 +230,17 @@
       return layers;
     }
 
-    // Calculation assumes each segment is from layers[i] (top) to layers[i+1] (bottom)
-    function calcVector(K) {
-      let layers = getSortedWindLayers();
+    // Calculation for each phase, custom K (3 for FF, 30 for Canopy)
+    function calcVector(layers, K) {
       if (layers.length < 2) return {
         dx:0, dy:0, dxR:'0.00', dyR:'0.00', total:'0.00', bearing:'0.0'
       };
-
       let sumDx = 0, sumDy = 0;
       for (let i = 0; i < layers.length - 1; i++) {
         const top = layers[i];
         const bot = layers[i + 1];
         const dAlt = (top.alt - bot.alt) / 1000;
         if (dAlt <= 0) continue;
-        // Use wind at the top of the segment
         const dir = top.dir;
         const spd = top.spd;
         const angle = (dir + 180) % 360;
@@ -232,7 +253,6 @@
       }
       const total = Math.sqrt(sumDx**2 + sumDy**2);
       const bearing = (Math.atan2(sumDx, sumDy) * 180 / Math.PI + 360) % 360;
-
       return {
         dx: sumDx,
         dy: sumDy,
@@ -243,105 +263,148 @@
       };
     }
 
+    // Generate a 3D path for both phases
+    // For each layer pair, subdivide into N steps
+    function generateDriftPath3D(ffLayers, canopyLayers, ffSpeed, cdSpeed) {
+      let xs = [0], ys = [0], zs = [];
+      if (ffLayers.length < 2 && canopyLayers.length < 2) return {xs, ys, zs};
+
+      // Freefall path
+      let x = 0, y = 0;
+      for (let i = 0; i < ffLayers.length - 1; i++) {
+        const top = ffLayers[i];
+        const bot = ffLayers[i + 1];
+        let z1 = top.alt, z2 = bot.alt;
+        let dAlt = z1 - z2;
+        if (dAlt <= 0) continue;
+        let dir = top.dir, spd = top.spd;
+        let angle = (dir + 180) % 360;
+        let vx = spd * Math.sin(degToRad(angle));
+        let vy = spd * Math.cos(degToRad(angle));
+        // Time = dAlt (ft) * 0.3048 / ffSpeed (m/s)
+        let segMeters = dAlt * 0.3048;
+        let segTime = ffSpeed ? segMeters / ffSpeed : segMeters / 54; // 54 m/s default
+        let steps = Math.max(2, Math.round(dAlt / 500));
+        for (let j = 1; j <= steps; j++) {
+          let frac = j / steps;
+          let z = z1 - (z1 - z2) * frac;
+          let dx = 3 * ((dAlt / 1000) * frac) * vx; // K=3 for FF
+          let dy = 3 * ((dAlt / 1000) * frac) * vy;
+          xs.push(x + dx);
+          ys.push(y + dy);
+          zs.push(z);
+        }
+        // update x, y to end of this segment
+        x += 3 * (dAlt / 1000) * vx;
+        y += 3 * (dAlt / 1000) * vy;
+      }
+
+      // Canopy path (start at end of FF)
+      let can_x = x, can_y = y;
+      if (ffLayers.length >= 2) zs.push(ffLayers[ffLayers.length-1].alt);
+      for (let i = 0; i < canopyLayers.length - 1; i++) {
+        const top = canopyLayers[i];
+        const bot = canopyLayers[i + 1];
+        let z1 = top.alt, z2 = bot.alt;
+        let dAlt = z1 - z2;
+        if (dAlt <= 0) continue;
+        let dir = top.dir, spd = top.spd;
+        let angle = (dir + 180) % 360;
+        let vx = spd * Math.sin(degToRad(angle));
+        let vy = spd * Math.cos(degToRad(angle));
+        let segMeters = dAlt * 0.3048;
+        let segTime = cdSpeed ? segMeters / cdSpeed : segMeters / 7; // 7 m/s default
+        let steps = Math.max(2, Math.round(dAlt / 500));
+        for (let j = 1; j <= steps; j++) {
+          let frac = j / steps;
+          let z = z1 - (z1 - z2) * frac;
+          let dx = 30 * ((dAlt / 1000) * frac) * vx; // K=30 for canopy
+          let dy = 30 * ((dAlt / 1000) * frac) * vy;
+          xs.push(can_x + dx);
+          ys.push(can_y + dy);
+          zs.push(z);
+        }
+        can_x += 30 * (dAlt / 1000) * vx;
+        can_y += 30 * (dAlt / 1000) * vy;
+      }
+      // Last point at ground
+      if (canopyLayers.length >= 2) zs.push(canopyLayers[canopyLayers.length-1].alt);
+      return {xs, ys, zs};
+    }
+
     function calcDrift() {
-      const ffd = calcVector(3);
-      const cd = calcVector(30);
+      const ffLayers = getSortedWindLayers('ff');
+      const canopyLayers = getSortedWindLayers('canopy');
+      const ffd = calcVector(ffLayers, 3);
+      const cd = calcVector(canopyLayers, 30);
 
       document.getElementById("drift-result").innerHTML = `
-        <b>Freefall Drift (K=3):</b><br>
+        <b>Freefall Drift:</b> <br>
         💨 X: ${ffd.dxR} m | Y: ${ffd.dyR} m<br>
         📏 Distance: ${ffd.total} m<br>
         🧭 Bearing: ${ffd.bearing}°<br><br>
-        <b>Canopy Drift (K=30):</b><br>
+        <b>Canopy Drift:</b> <br>
         🪂 X: ${cd.dxR} m | Y: ${cd.dyR} m<br>
         📏 Distance: ${cd.total} m<br>
         🧭 Bearing: ${cd.bearing}°
       `;
 
-      plotDrift(ffd, cd);
+      // 3D plot
+      let ffSpeed = parseFloat(document.getElementById("ff-speed").value);
+      let cdSpeed = parseFloat(document.getElementById("cd-speed").value);
+      if (isNaN(ffSpeed) || ffSpeed <= 0) ffSpeed = undefined;
+      if (isNaN(cdSpeed) || cdSpeed <= 0) cdSpeed = undefined;
+      plotDrift3D(ffLayers, canopyLayers, ffSpeed, cdSpeed);
     }
 
-    function plotDrift(ffd, cd) {
-      const ctx = document.getElementById('drift-plot').getContext('2d');
-
-      // Find the maximum extent for chart scaling
-      const max = Math.max(
-        Math.abs(ffd.dx), Math.abs(ffd.dy),
-        Math.abs(cd.dx), Math.abs(cd.dy), 10
-      );
-
-      // Datasets for Freefall and Canopy
-      const data = {
-        labels: ['Origin', 'Freefall', 'Canopy'],
-        datasets: [
-          // Freefall vector (blue)
-          {
-            label: 'Freefall Drift',
-            data: [
-              {x: 0, y: 0},
-              {x: ffd.dx, y: ffd.dy}
-            ],
-            borderColor: 'blue',
-            backgroundColor: 'blue',
-            pointRadius: [5, 5],
-            fill: false,
-            showLine: true,
-            tension: 0,
-          },
-          // Canopy vector (green)
-          {
-            label: 'Canopy Drift',
-            data: [
-              {x: 0, y: 0},
-              {x: cd.dx, y: cd.dy}
-            ],
-            borderColor: 'green',
-            backgroundColor: 'green',
-            pointRadius: [5, 5],
-            fill: false,
-            showLine: true,
-            tension: 0,
-          }
-        ]
+    // 3D plot with Plotly
+    function plotDrift3D(ffLayers, canopyLayers, ffSpeed, cdSpeed) {
+      const path = generateDriftPath3D(ffLayers, canopyLayers, ffSpeed, cdSpeed);
+      // Make sure zs is same length as xs, ys
+      while (path.zs.length < path.xs.length) path.zs.push(0);
+      // Main path
+      const trace = {
+        x: path.xs,
+        y: path.ys,
+        z: path.zs,
+        mode: 'lines+markers',
+        marker: { size: 4, color: path.zs, colorscale: 'Viridis', colorbar: {title: 'Altitude(ft)'} },
+        line: { color: 'purple', width: 4 },
+        type: 'scatter3d',
+        name: 'Drift Path'
       };
-
-      const options = {
-        responsive: false,
-        scales: {
-          x: {
-            min: -max,
-            max: max,
-            title: {
-              display: true,
-              text: 'X (meters)'
-            },
-            grid: { color: '#eee' }
-          },
-          y: {
-            min: -max,
-            max: max,
-            title: {
-              display: true,
-              text: 'Y (meters)'
-            },
-            grid: { color: '#eee' }
-          }
+      // Origin
+      const trace2 = {
+        x: [0], y: [0], z: [ffLayers.length ? ffLayers[0].alt : 0],
+        mode: 'markers+text',
+        marker: { size: 8, color: 'red' },
+        text: ['Origin'],
+        textposition: 'top center',
+        type: 'scatter3d',
+        name: 'Origin'
+      };
+      // Last point (landing)
+      let lx = path.xs[path.xs.length-1];
+      let ly = path.ys[path.ys.length-1];
+      let lz = path.zs[path.zs.length-1];
+      const trace3 = {
+        x: [lx], y: [ly], z: [lz],
+        mode: 'markers+text',
+        marker: { size: 8, color: 'green' },
+        text: ['Landing'],
+        textposition: 'bottom center',
+        type: 'scatter3d',
+        name: 'Landing'
+      };
+      Plotly.newPlot('drift-plot-3d', [trace, trace2, trace3], {
+        margin: { l:0, r:0, b:0, t:0 },
+        scene: {
+          xaxis: { title: 'X (m)' },
+          yaxis: { title: 'Y (m)' },
+          zaxis: { title: 'Altitude (ft)' }
         },
-        plugins: {
-          legend: { display: true, position: 'top' },
-          tooltip: { enabled: true }
-        }
-      };
-
-      // Destroy old chart if exists
-      if (driftChart) {
-        driftChart.destroy();
-      }
-      driftChart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: options
-      });
+        legend: { x: 0.02, y: 0.98 }
+      }, {displayModeBar: false});
     }
 
     function calcFT() {
@@ -366,9 +429,11 @@
       document.getElementById("dis-result").innerText = `👥 DIS = ${dis.toFixed(2)} meters`;
     }
 
-    // Add two default layers for user convenience
-    addLayer();
-    addLayer();
+    // Add two default layers for user convenience, both for FF and Canopy
+    addLayer('ff');
+    addLayer('ff');
+    addLayer('canopy');
+    addLayer('canopy');
   </script>
    <div class="section">
     <h3>Release Point (CARP) Calculator</h3>
@@ -393,8 +458,10 @@
       if (isNaN(dipy)) dipy = 0;
 
       // Get FFD and CD vectors (recalculate to be current)
-      const ffd = calcVector(3);
-      const cd = calcVector(30);
+      const ffLayers = getSortedWindLayers('ff');
+      const canopyLayers = getSortedWindLayers('canopy');
+      const ffd = calcVector(ffLayers, 3);
+      const cd = calcVector(canopyLayers, 30);
 
       // Forward Throw
       const ft = parseFloat(document.getElementById('ft-value').value);
